@@ -49,19 +49,19 @@ global.location = process.env.LOCATION || "Pakistan, Lahore, Sabzazar";
 
 
 //~~~~~~~~<Session and Bot Details>~~~~~~~~~~~~~\\
-global.SESSION_ID = process.env.SESSION_ID || '';
+global.SESSION_ID = process.env.SESSION_ID || 'MTEE-XMD~VrFxFAjC#xCZotU062JGHci37gX0H187QGlbzr7ZAc5FufU2zfbE';
 
-global.botname = process.env.BOT_NAME || 'XLICON-V4-MD';
+global.botname = process.env.BOT_NAME || 'MTEE-XMD;
 
-global.ownernumber = [process.env.OWNER_NUMBER || '923184070915'];
+global.ownernumber = [process.env.OWNER_NUMBER || '263786453367'];
 
-global.ownername = process.env.OWNER_NAME || '𝙎𝙖𝙡𝙢𝙖𝙣 𝘼𝙝𝙢𝙖𝙙';
+global.ownername = process.env.OWNER_NAME || 'MTEE';
 
 
 //~~~~~~<Website and Social Links>~~~~~~~~~~\\
 global.websitex = process.env.WEBSITE_URL || "https://youtube.com/@s4salmanyt";
 
-global.wagc = process.env.WHATSAPP_CHANNEL || "https://whatsapp.com/channel/0029VaINgEZK0IBaK1nDtE3f";
+global.wagc = process.env.WHATSAPP_CHANNEL || "https://whatsapp.com/channel/0029Vb6EJfCHLHQQGd2KGL1P";
 
 
 //~~~~~~~~<Theme and Miscellaneous>~~~~~~~~~~\\
