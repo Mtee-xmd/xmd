@@ -67,7 +67,7 @@ async function sessionLoader() {
       return console.log(color(`Session id and creds.json not found!!\n\nWait to enter your number`, 'red'));
       }
 
-      const sessionData = global.SESSION_ID.split("XLICON-V4~")[1];
+      const sessionData = global.SESSION_ID.split("MTEE-XMD~")[1];
       const filer = File.fromURL(`https://mega.nz/file/${sessionData}`);
 
       await new Promise((resolve, reject) => {
