@@ -127,23 +127,23 @@ getDataResponList
 
 
 //Modules Function
-const { xvideosSearch, xvideosdl, xnxxdl, xnxxSearch} = require('./lib/scraper3.js');
-const { imageToWebp, videoToWebp, writeExif, writeExifImg, writeExifVid } = require('./lib/exif');
-const { chatGpt, tiktokDl, ytMp4, ytMp3 } = require('./lib/screaper');
-const { gameSlot, gameCasinoSolo, gameMerampok, gameTangkapOr, daily, transferLimit, transferUang, buy, setLimit, setUang } = require('./lib/game');
-const { pinterest, wallpaper, wikimedia, quotesAnime, happymod, umma, ringtone, jadwalsholat, styletext } = require('./lib/scraper');
-const { formatp, formatDate, getTime, isUrl, sleep, clockString, runtime, fetchJson, getBuffer, jsonformat, format, webApi, parseMention, generateProfilePicture, getRandom, getGroupAdmins, readFileTxt, readFileJson, getHashedPassword, generateAuthToken, generateToken, batasiTeks, randomText, isEmoji, getAllHTML, fetchBuffer, GIFBufferToVideoBuffer } = require('./lib/function');
+const { xvideosSearch, xvideosdl, xnxxdl, xnxxSearch} = require('./mtee-utils/scraper3.js');
+const { imageToWebp, videoToWebp, writeExif, writeExifImg, writeExifVid } = require('./mtee-utils/exif');
+const { chatGpt, tiktokDl, ytMp4, ytMp3 } = require('./mtee-utils/screaper');
+const { gameSlot, gameCasinoSolo, gameMerampok, gameTangkapOr, daily, transferLimit, transferUang, buy, setLimit, setUang } = require('./mtee-utils/game');
+const { pinterest, wallpaper, wikimedia, quotesAnime, happymod, umma, ringtone, jadwalsholat, styletext } = require('./mtee-utils/scraper');
+const { formatp, formatDate, getTime, isUrl, sleep, clockString, runtime, fetchJson, getBuffer, jsonformat, format, webApi, parseMention, generateProfilePicture, getRandom, getGroupAdmins, readFileTxt, readFileJson, getHashedPassword, generateAuthToken, generateToken, batasiTeks, randomText, isEmoji, getAllHTML, fetchBuffer, GIFBufferToVideoBuffer } = require('./mtee-utils/function');
 //---------------------------------------------------------------------------------------------------------------------------//
 
 // Read Database
 let vote = db.others.vote = []
-const xliconverifieduser = JSON.parse(fs.readFileSync('./src/user.json'));
+const xliconverifieduser = JSON.parse(fs.readFileSync('./mtee-core/user.json'));
 const premium = JSON.parse(fs.readFileSync('./database/premium.json'));
 //---------------------------------------------------------------------------------------------------------------------------//
 
 // Read JSON
 //store database
-const db_respon_list = JSON.parse(fs.readFileSync('./src/store/list.json'))
+const db_respon_list = JSON.parse(fs.readFileSync('./mtee-core/store/list.json'))
 
 global.db = JSON.parse(fs.readFileSync('./database/database.json'))
 if (global.db) global.db = {
