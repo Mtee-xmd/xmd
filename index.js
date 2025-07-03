@@ -1,7 +1,7 @@
-require('./settings');
+require('./mtee-config/settings');
 const fs = require('fs');
 const pino = require('pino');
-const { color } = require('./lib/color');
+const { color } = require('./mtee-utils/color');
 const path = require('path');
 const axios = require('axios');
 const chalk = require('chalk');
@@ -25,7 +25,7 @@ let owner = JSON.parse(fs.readFileSync('./src/owner.json'));
 
 global.api = (name, path = '/', query = {}, apikeyqueryname) => (name in global.APIs ? global.APIs[name] : name) + path + (query || apikeyqueryname ? '?' + new URLSearchParams(Object.entries({ ...query, ...(apikeyqueryname ? { [apikeyqueryname]: global.APIKeys[name in global.APIs ? global.APIs[name] : name] } : {}) })) : '');
 
-const DataBase = require('./src/database');
+const DataBase = require('./mtee-core/database');
 const database = new DataBase();
 (async () => {
 	const loadData = await database.read();
@@ -49,9 +49,9 @@ const database = new DataBase();
 	}, 30000);
 })();
 
-const { GroupUpdate, GroupParticipantsUpdate, MessagesUpsert, Solving } = require('./src/message');
-const { imageToWebp, videoToWebp, writeExifImg, writeExifVid } = require('./lib/exif');
-const { isUrl, generateMessageTag, getBuffer, getSizeMedia, fetchJson, await, sleep } = require('./lib/function');
+const { GroupUpdate, GroupParticipantsUpdate, MessagesUpsert, Solving } = require('./mtee-core/message');
+const { imageToWebp, videoToWebp, writeExifImg, writeExifVid } = require('./mtee-utils/exif');
+const { isUrl, generateMessageTag, getBuffer, getSizeMedia, fetchJson, await, sleep } = require('./mtee-utils/function');
 
 
 const sessionDir = path.join(__dirname, 'session');
@@ -79,7 +79,7 @@ async function sessionLoader() {
       .then(async (data) => {
         await fs.promises.writeFile(credsPath, data);
         console.log(color(`Session downloaded successfully, proceeding to start...`, 'green'));
-        await startXliconBot();
+        await startMteeBot();
       });
     }
   } catch (error) {
@@ -89,24 +89,24 @@ async function sessionLoader() {
 
 console.log(
   chalk.cyan(`
-██╗  ██╗██╗      ██████╗██╗ ██████╗ ███╗   ██╗      ██╗   ██╗██╗  ██╗
-╚██╗██╔╝██║     ██╔════╝██║██╔═══██╗████╗  ██║      ██║   ██║██║  ██║
- ╚███╔╝ ██║     ██║     ██║██║   ██║██╔██╗ ██║█████╗██║   ██║███████║
- ██╔██╗ ██║     ██║     ██║██║   ██║██║╚██╗██║╚════╝╚██╗ ██╔╝╚════██║
-██╔╝ ██╗███████╗╚██████╗██║╚██████╔╝██║ ╚████║       ╚████╔╝      ██║
-╚═╝  ╚═╝╚══════╝ ╚═════╝╚═╝ ╚═════╝ ╚═╝  ╚═══╝        ╚═══╝       ╚═╝
+███╗   ███╗████████╗███████╗███████╗      ██╗  ██╗███╗   ███╗██████╗ 
+████╗ ████║╚══██╔══╝██╔════╝██╔════╝      ╚██╗██╔╝████╗ ████║██╔══██╗
+██╔████╔██║   ██║   █████╗  █████╗   █████╗╚███╔╝ ██╔████╔██║██║  ██║
+██║╚██╔╝██║   ██║   ██╔══╝  ██╔══╝   ╚════╝██╔██╗ ██║╚██╔╝██║██║  ██║
+██║ ╚═╝ ██║   ██║   ███████╗███████╗      ██╔╝ ██╗██║ ╚═╝ ██║██████╔╝
+╚═╝     ╚═╝   ╚═╝   ╚══════╝╚══════╝      ╚═╝  ╚═╝╚═╝     ╚═╝╚═════╝ 
   `)
 );
 
 console.log(chalk.white.bold(`${chalk.gray.bold("📃  Information :")}         
-✉️  Script : XLICON-V4-MD
-✉️  Author : SALMAN AHMAD
-✉️  Gmail : salmansheikh2500@gmail.com
-✉️  Instagram : ahmmikun
+✉️  Script : MTEE-XMD
+✉️  Author : MTEE
+✉️  Gmail : mtee@example.com
+✉️  Instagram : mtee_official
 
-${chalk.green.bold("Ｐｏｗｅｒｅｄ Ｂｙ ＸＬＩＣＯＮ ＢＯＴＺ")}\n`));
+${chalk.green.bold("Ｐｏｗｅｒｅｄ Ｂｙ ＭＴＥＥ ＢＯＴＺ")}\n`));
 
-async function startXliconBot() {
+async function startMteeBot() {
     //------------------------------------------------------
     let version = [2, 3000, 1015901307];
     let isLatest = false;
@@ -114,7 +114,7 @@ async function startXliconBot() {
     const { state, saveCreds } = await useMultiFileAuthState(`./session`);
     const msgRetryCounterCache = new NodeCache();
     
-    const XliconBotInc = makeWASocket({
+    const MteeBotInc = makeWASocket({
         logger: pino({ level: 'silent' }),
         printQRInTerminal: !pairingCode,
         browser: Browsers.windows('Firefox'),
@@ -158,16 +158,16 @@ async function startXliconBot() {
             const reason = new Boom(lastDisconnect?.error)?.output.statusCode;
             if (reason === DisconnectReason.connectionLost) {
                 console.log('Connection to Server Lost, Attempting to Reconnect...');
-                startXliconBot();
+                startMteeBot();
             } else if (reason === DisconnectReason.connectionClosed) {
                 console.log('Connection closed, Attempting to Reconnect...');
-                startXliconBot();
+                startMteeBot();
             } else if (reason === DisconnectReason.restartRequired) {
                 console.log('Restart Required...');
-                startXliconBot();
+                startMteeBot();
             } else if (reason === DisconnectReason.timedOut) {
                 console.log('Connection Timed Out, Attempting to Reconnect...');
-                startXliconBot();
+                startMteeBot();
             } else if (reason === DisconnectReason.badSession) {
                 console.log('Delete Session and Scan again...');
                 process.exit(1);
@@ -227,17 +227,17 @@ async function startXliconBot() {
 async function initStart() {
     if (fs.existsSync(credsPath)) {
         console.log(color("Creds.json exists, proceeding to start...", 'yellow'));
-await startXliconBot();
+await startMteeBot();
 } else {
          const sessionCheck = await sessionLoader();
         if (sessionCheck) {
             console.log("Session downloaded successfully, proceeding to start... .");
-await startXliconBot();
+await startMteeBot();
     } else {
      if (!fs.existsSync(credsPath)) {
     if(!global.SESSION_ID) {
             console.log(color("Please wait for a few seconds to enter your number!", 'red'));
-await startXliconBot();
+await startMteeBot();
         }
     }
   }

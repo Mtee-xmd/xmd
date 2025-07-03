@@ -1,6 +1,6 @@
 //══════════════════════════════════════════════════════════════════════════════════════════════════════//
 //                                                                                                      //
-//                                    𝗫𝗟𝗜𝗖𝗢𝗡-𝗩𝟰-𝗠𝗗  𝐁𝐎𝐓                                                //
+//                                      ����-�𝗠𝗗  𝐁𝐎𝐓                                                  //
 //                                                                                                      //
 //                                         Ｖ：4.0                                                       //
 //                                                                                                      //
@@ -16,10 +16,10 @@
 //                                                                                                      //
 //══════════════════════════════════════════════════════════════════════════════════════════════════════//
 //*
-//  * @project_name : XLICON-V4-MD
-//  * @author : salmanytofficial
+//  * @project_name : MTEE-XMD
+//  * @author : MTEE
 //  * @youtube : https://www.youtube.com/@s4salmanyt
-//  * @description : XLICON-V4 ,A Multi-functional whatsapp user bot.
+//  * @description : MTEE-XMD ,A Multi-functional whatsapp user bot.
 //*
 //*
 //base by DGXeon
@@ -31,7 +31,7 @@
 //want more free bot scripts? subscribe to my youtube channel: https://youtube.com/@DGXeon
 //   * Created By Github: DGXeon.
 //   * Credit To Xeon
-//   * © 2025 XLICON-V4-MD.
+//   * © 2025 MTEE-XMD.
 // ⛥┌┤
 // */
 
@@ -51,7 +51,7 @@ global.location = process.env.LOCATION || "Pakistan, Lahore, Sabzazar";
 //~~~~~~~~<Session and Bot Details>~~~~~~~~~~~~~\\
 global.SESSION_ID = process.env.SESSION_ID || 'MTEE-XMD~VrFxFAjC#xCZotU062JGHci37gX0H187QGlbzr7ZAc5FufU2zfbE';
 
-global.botname = process.env.BOT_NAME || 'MTEE-XMD;
+global.botname = process.env.BOT_NAME || 'MTEE-XMD';
 
 global.ownernumber = [process.env.OWNER_NUMBER || '263786453367'];
 
@@ -67,13 +67,13 @@ global.wagc = process.env.WHATSAPP_CHANNEL || "https://whatsapp.com/channel/0029
 //~~~~~~~~<Theme and Miscellaneous>~~~~~~~~~~\\
 global.themeemoji = process.env.THEME_EMOJI || '⛩';
 
-global.wm = process.env.WATERMARK || "Xlicon Bot Inc.";
+global.wm = process.env.WATERMARK || "MTEE-XMD Bot";
 
 global.botscript = process.env.SCRIPT_LINK || 'https://github.com/salmanytofficial/XLICON-V4-MD';
 
-global.packname = process.env.PACK_NAME || "𝘼𝙃𝙃𝙈𝙄 𝙆𝙐𝙉";
+global.packname = process.env.PACK_NAME || "MTEE-XMD";
 
-global.author = process.env.AUTHOR_NAME || "MΛDΣ BY 𝙎𝘼𝙇𝙈𝘼𝙉 𝘼𝙃𝙈𝘼𝘿";
+global.author = process.env.AUTHOR_NAME || "MADE BY MTEE";
 
 global.creator = process.env.CREATOR_NUMBER || "923184070915@s.whatsapp.net";
 
