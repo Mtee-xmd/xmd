@@ -1,16 +1,16 @@
 {
-  "name": "XLICON-V4-MD",
+  "name": "MTEE-XMD",
   "version": "4.0.0",
-  "description": "Bot WhatsApp Using Lib Baileys Multi Device",
+  "description": "MTEE-XMD WhatsApp Bot Using Baileys Multi Device",
   "main": "start.js",
   "type": "commonjs",
   "scripts": {
     "start": "node start.js"              
   },
   "keywords": [
-    "Whatsapp Bot By Salman Ahmad"
+    "Whatsapp Bot By MTEE"
   ],
-  "author": "Salman-Ahmad",
+  "author": "MTEE",
   "license": "MIT",
   "dependencies": {
     "@whiskeysockets/baileys" : "npm:baileys@latest",
