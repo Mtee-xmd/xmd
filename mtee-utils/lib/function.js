@@ -370,14 +370,14 @@ const fetchBuffer = async (url, options) => {
 const GIFBufferToVideoBuffer = async (image) => {
 
     const filename = `${Math.random().toString(36)}`
-    await fs.writeFileSync(`./XliconMedia/trash/${filename}.gif`, image)
+    await fs.writeFileSync(`./MteeMedia/trash/${filename}.gif`, image)
     child_process.exec(
-        `ffmpeg -i ./XliconMedia/trash/${filename}.gif -movflags faststart -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" ./XliconMedia/trash/${filename}.mp4`
+        `ffmpeg -i ./MteeMedia/trash/${filename}.gif -movflags faststart -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" ./MteeMedia/trash/${filename}.mp4`
     )
     await sleepy(4000)
 
-    var buffer5 = await fs.readFileSync(`./XliconMedia/trash/${filename}.mp4`)
-    Promise.all([unlink(`./XliconMedia/trash/${filename}.mp4`), unlink(`./XliconMedia/trash/${filename}.gif`)])
+    var buffer5 = await fs.readFileSync(`./MteeMedia/trash/${filename}.mp4`)
+    Promise.all([unlink(`./MteeMedia/trash/${filename}.mp4`), unlink(`./MteeMedia/trash/${filename}.gif`)])
     return buffer5
 }
 

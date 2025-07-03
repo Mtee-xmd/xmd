@@ -151,8 +151,8 @@ async function GroupParticipantsUpdate(XliconBotInc, { id, participants, action 
 				} catch {
 					profile = 'https://telegra.ph/file/95670d63378f7f4210f03.png';
 				}
-				XliconWlcm = await getBuffer(profile)
-                XliconLft = await getBuffer(profile)
+				MteeWlcm = await getBuffer(profile)
+                MteeLft = await getBuffer(profile)
 				if (action == 'add') {
 				let xliconName = n
                 const xdate = moment.tz('Asia/Kolkata').locale('en-IN').format('DD/MM/YYYY');
@@ -188,7 +188,7 @@ let msgs = generateWAMessageFromContent(id, {
           }),
           header: proto.Message.InteractiveMessage.Header.create({
           hasMediaAttachment: false,
-          ...await prepareWAMessageMedia({ image: XliconWlcm }, { upload: XliconBotInc.waUploadToServer })
+          ...await prepareWAMessageMedia({ image: MteeWlcm }, { upload: XliconBotInc.waUploadToServer })
           }),
           nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.create({
             buttons: [{
@@ -247,7 +247,7 @@ let msgs = generateWAMessageFromContent(id, {
           }),
           header: proto.Message.InteractiveMessage.Header.create({
           hasMediaAttachment: false,
-          ...await prepareWAMessageMedia({ image: XliconLft }, { upload: XliconBotInc.waUploadToServer })
+          ...await prepareWAMessageMedia({ image: MteeLft }, { upload: XliconBotInc.waUploadToServer })
           }),
           nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.create({
             buttons: [{
@@ -285,7 +285,7 @@ xliconbody = ` 𝗖𝗼𝗻𝗴𝗿𝗮𝘁🎉 @${xliconName.split("@")[0]}, yo
 "body": `${ownername}`,
  "previewType": "PHOTO",
 "thumbnailUrl": ``,
-"thumbnail": XliconWlcm,
+"thumbnail": MteeWlcm,
 "sourceUrl": `${wagc}`}}})
 				} else if (action == 'demote') {
 const xlicontime = moment().tz('Asia/Kolkata').locale('en-IN').format('HH:mm:ss');
@@ -302,7 +302,7 @@ await XliconBotInc.sendMessage(id,
 "body": `${ownername}`,
  "previewType": "PHOTO",
 "thumbnailUrl": ``,
-"thumbnail": XliconLft,
+"thumbnail": MteeLft,
 "sourceUrl": `${wagc}`}}})
 				}
 			}
@@ -321,7 +321,7 @@ async function MessagesUpsert(XliconBotInc, message, store) {
 		if (msg.key.id.length === 28) return
 		if (!msg.message) return
 		const m = await Serialize(XliconBotInc, msg, store)
-		require('../XliconV4')(XliconBotInc, m, message, store);
+		        require('../MteeBot')(MteeBotInc, m, message, store);
 		if (type === 'interactiveResponseMessage' && m.quoted && m.quoted.fromMe) {
 			let apb = await generateWAMessage(m.chat, { text: JSON.parse(m.msg.nativeFlowResponseMessage.paramsJson).id, mentions: m.mentionedJid }, {
 				userJid: XliconBotInc.user.id,
@@ -643,7 +643,7 @@ return [...text.matchAll(/@([0-9]{5,16}|0)/g)].map(v => v[1] + '@s.whatsapp.net'
 			mime: 'application/octet-stream',
 			ext: '.bin'
 		}
-		filename = path.join(__filename, '../XliconMedia/trash/' + new Date * 1 + '.' + type.ext)
+		filename = path.join(__filename, '../MteeMedia/trash/' + new Date * 1 + '.' + type.ext)
 		if (data && save) fs.promises.writeFile(filename, data)
 		return {
 			res,

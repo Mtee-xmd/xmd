@@ -1,7 +1,7 @@
-require('./settings');
+require('./mtee-config/settings');
 const fs = require('fs');
 const pino = require('pino');
-const { color } = require('./lib/color');
+const { color } = require('./mtee-utils/color');
 const path = require('path');
 const axios = require('axios');
 const chalk = require('chalk');
@@ -25,7 +25,7 @@ let owner = JSON.parse(fs.readFileSync('./src/owner.json'));
 
 global.api = (name, path = '/', query = {}, apikeyqueryname) => (name in global.APIs ? global.APIs[name] : name) + path + (query || apikeyqueryname ? '?' + new URLSearchParams(Object.entries({ ...query, ...(apikeyqueryname ? { [apikeyqueryname]: global.APIKeys[name in global.APIs ? global.APIs[name] : name] } : {}) })) : '');
 
-const DataBase = require('./src/database');
+const DataBase = require('./mtee-core/database');
 const database = new DataBase();
 (async () => {
 	const loadData = await database.read();
@@ -49,9 +49,9 @@ const database = new DataBase();
 	}, 30000);
 })();
 
-const { GroupUpdate, GroupParticipantsUpdate, MessagesUpsert, Solving } = require('./src/message');
-const { imageToWebp, videoToWebp, writeExifImg, writeExifVid } = require('./lib/exif');
-const { isUrl, generateMessageTag, getBuffer, getSizeMedia, fetchJson, await, sleep } = require('./lib/function');
+const { GroupUpdate, GroupParticipantsUpdate, MessagesUpsert, Solving } = require('./mtee-core/message');
+const { imageToWebp, videoToWebp, writeExifImg, writeExifVid } = require('./mtee-utils/exif');
+const { isUrl, generateMessageTag, getBuffer, getSizeMedia, fetchJson, await, sleep } = require('./mtee-utils/function');
 
 
 const sessionDir = path.join(__dirname, 'session');

@@ -43,8 +43,8 @@ process.setMaxListeners(500);
 //---------------------------------------------------------------------------------------------------------------------------//
 
 //MODULE EXPOERTS AND REQUIREMENTS 
-require('./settings');
-require('./lib/fetch');
+require('./mtee-config/settings');
+require('./mtee-utils/fetch');
 const fs = require('fs');
 const os = require('os');
 const util = require('util');
@@ -70,9 +70,9 @@ const PDFDocument = require("pdfkit");
 const more = String.fromCharCode(8206);
 const readmore = more.repeat(4001);
 const fsx = require('fs-extra');
-const scp2 = require('./lib/scraper2');
-const { fetchChapterPages, searchManga } = require('./lib/mangadl');
-const { uploadMedia, handleMediaUpload } = require('./lib/catbox'); 
+const scp2 = require('./mtee-utils/scraper2');
+const { fetchChapterPages, searchManga } = require('./mtee-utils/mangadl');
+const { uploadMedia, handleMediaUpload } = require('./mtee-utils/catbox'); 
 const jsobfus = require('javascript-obfuscator');
 const {translate} = require('@vitalets/google-translate-api');
 const { randomBytes } = require('crypto')
@@ -80,30 +80,30 @@ const { BufferJSON, WA_DEFAULT_EPHEMERAL, generateWAMessageFromContent, proto, g
 //---------------------------------------------------------------------------------------------------------------------------//
 
 //Alert Function
-let ntnsfw = JSON.parse(fs.readFileSync('./src/nsfw.json'))
-let bad = JSON.parse(fs.readFileSync('./src/badword.json'))
+let ntnsfw = JSON.parse(fs.readFileSync('./mtee-core/nsfw.json'))
+let bad = JSON.parse(fs.readFileSync('./mtee-core/badword.json'))
 //---------------------------------------------------------------------------------------------------------------------------//
 
 //media
-const VoiceNoteXlicon = JSON.parse(fs.readFileSync('./XliconMedia/database/xliconvn.json'));
-const StickerXlicon = JSON.parse(fs.readFileSync('./XliconMedia/database/xliconsticker.json'));
-const ImageXlicon = JSON.parse(fs.readFileSync('./XliconMedia/database/xliconimage.json'));
-const VideoXlicon = JSON.parse(fs.readFileSync('./XliconMedia/database/xliconvideo.json'));
-const DocXlicon = JSON.parse(fs.readFileSync('./XliconMedia/database/doc.json'));
-const ZipXlicon = JSON.parse(fs.readFileSync('./XliconMedia/database/zip.json'));
-const ApkXlicon = JSON.parse(fs.readFileSync('./XliconMedia/database/apk.json'));
+const VoiceNoteMtee = JSON.parse(fs.readFileSync('./MteeMedia/database/mteevn.json'));
+const StickerMtee = JSON.parse(fs.readFileSync('./MteeMedia/database/mteesticker.json'));
+const ImageMtee = JSON.parse(fs.readFileSync('./MteeMedia/database/mteeimage.json'));
+const VideoMtee = JSON.parse(fs.readFileSync('./MteeMedia/database/mteevideo.json'));
+const DocMtee = JSON.parse(fs.readFileSync('./MteeMedia/database/doc.json'));
+const ZipMtee = JSON.parse(fs.readFileSync('./MteeMedia/database/zip.json'));
+const ApkMtee = JSON.parse(fs.readFileSync('./MteeMedia/database/apk.json'));
 //---------------------------------------------------------------------------------------------------------------------------//
 
 
 //Permission Check Function
-const prem = require('./src/premium');
-const owner = JSON.parse(fs.readFileSync('./src/owner.json'));
+const prem = require('./mtee-core/premium');
+const owner = JSON.parse(fs.readFileSync('./mtee-core/owner.json'));
 //---------------------------------------------------------------------------------------------------------------------------//
 
 
 //Uploader & Converter Function
-const { TelegraPh, UploadFileUgu } = require('./lib/uploader');
-const uploadImage = require('./lib/uploadImage');
+const { TelegraPh, UploadFileUgu } = require('./mtee-utils/uploader');
+const uploadImage = require('./mtee-utils/uploadImage');
 const {
     toAudio,
     toPTT,
@@ -113,7 +113,7 @@ const {
   Telesticker,
   formatBytes,
   formatDuration
-} = require('./lib/converter');
+} = require('./mtee-utils/converter');
 const { 
 addResponList, 
 delResponList, 
@@ -122,7 +122,7 @@ isAlreadyResponListGroup,
 sendResponList, 
 updateResponList, 
 getDataResponList 
-} = require('./lib/list');
+} = require('./mtee-utils/list');
 //---------------------------------------------------------------------------------------------------------------------------//
 
 
@@ -1279,7 +1279,7 @@ if (global.db.users[m.sender].afkTime > -1) {
                             title: botname,
                             body: ownername,
                             previewType: "PHOTO",
-                            thumbnail: fs.readFileSync('./XliconMedia/theme/XliconPic.jpg'),
+                            thumbnail: fs.readFileSync('./MteeMedia/theme/MteePic.jpg'),
                             sourceUrl: wagc
                         }
                     },
@@ -1296,7 +1296,7 @@ if (global.db.users[m.sender].afkTime > -1) {
                         showAdAttribution: true,
                         title: botname,
                         body: ownername,
-                        thumbnail: fs.readFileSync('./XliconMedia/theme/XliconPic.jpg'),
+                        thumbnail: fs.readFileSync('./MteeMedia/theme/MteePic.jpg'),
                         sourceUrl: websitex,
                         mediaType: 1,
                         renderLargerThumbnail: true
@@ -1356,28 +1356,28 @@ quoted: m,
 
 //theme sticker reply
         const XliconStickWait = () => {
-        let XliconStikRep = fs.readFileSync('./XliconMedia/theme/sticker_reply/wait.webp')
-        XliconBotInc.sendMessage(m.chat, { sticker: XliconStikRep }, { quoted: m })
+        let MteeStikRep = fs.readFileSync('./MteeMedia/theme/sticker_reply/wait.webp')
+        XliconBotInc.sendMessage(m.chat, { sticker: MteeStikRep }, { quoted: m })
         }
         const XliconStickAdmin = () => {
-        let XliconStikRep = fs.readFileSync('./XliconMedia/theme/sticker_reply/admin.webp')
-        XliconBotInc.sendMessage(m.chat, { sticker: XliconStikRep }, { quoted: m })
+        let MteeStikRep = fs.readFileSync('./MteeMedia/theme/sticker_reply/admin.webp')
+        XliconBotInc.sendMessage(m.chat, { sticker: MteeStikRep }, { quoted: m })
         }
         const XliconStickBotAdmin = () => {
-        let XliconStikRep = fs.readFileSync('./XliconMedia/theme/sticker_reply/botadmin.webp')
-        XliconBotInc.sendMessage(m.chat, { sticker: XliconStikRep }, { quoted: m })
+        let MteeStikRep = fs.readFileSync('./MteeMedia/theme/sticker_reply/botadmin.webp')
+        XliconBotInc.sendMessage(m.chat, { sticker: MteeStikRep }, { quoted: m })
         }
         const XliconStickOwner = () => {
-        let XliconStikRep = fs.readFileSync('./XliconMedia/theme/sticker_reply/owner.webp')
-        XliconBotInc.sendMessage(m.chat, { sticker: XliconStikRep }, { quoted: m })
+        let MteeStikRep = fs.readFileSync('./MteeMedia/theme/sticker_reply/owner.webp')
+        XliconBotInc.sendMessage(m.chat, { sticker: MteeStikRep }, { quoted: m })
         }
         const XliconStickGroup = () => {
-        let XliconStikRep = fs.readFileSync('./XliconMedia/theme/sticker_reply/group.webp')
-        XliconBotInc.sendMessage(m.chat, { sticker: XliconStikRep }, { quoted: m })
+        let MteeStikRep = fs.readFileSync('./MteeMedia/theme/sticker_reply/group.webp')
+        XliconBotInc.sendMessage(m.chat, { sticker: MteeStikRep }, { quoted: m })
         }
         const XliconStickPrivate = () => {
-        let XliconStikRep = fs.readFileSync('./XliconMedia/theme/sticker_reply/private.webp')
-        XliconBotInc.sendMessage(m.chat, { sticker: XliconStikRep }, { quoted: m })
+        let MteeStikRep = fs.readFileSync('./MteeMedia/theme/sticker_reply/private.webp')
+        XliconBotInc.sendMessage(m.chat, { sticker: MteeStikRep }, { quoted: m })
         }
   
 //theme sticker reply end here        
@@ -1414,27 +1414,27 @@ var xliconytimewisher = `Good Morning 🌄`
 let setv = pickRandom(global.listv)
 
 //autoreply
-for (let BhosdikaXlicon of VoiceNoteXlicon) {
-if (budy === BhosdikaXlicon) {
-let audiobuffy = fs.readFileSync(`./XliconMedia/audio/${BhosdikaXlicon}.mp3`)
+for (let BhosdikaMtee of VoiceNoteMtee) {
+if (budy === BhosdikaMtee) {
+let audiobuffy = fs.readFileSync(`./MteeMedia/audio/${BhosdikaMtee}.mp3`)
 XliconBotInc.sendMessage(m.chat, { audio: audiobuffy, mimetype: 'audio/mp4', ptt: true }, { quoted: m })     
 }
 }
-for (let BhosdikaXlicon of StickerXlicon){
-if (budy === BhosdikaXlicon){
-let stickerbuffy = fs.readFileSync(`./XliconMedia/sticker/${BhosdikaXlicon}.webp`)
+for (let BhosdikaMtee of StickerMtee){
+if (budy === BhosdikaMtee){
+let stickerbuffy = fs.readFileSync(`./MteeMedia/sticker/${BhosdikaMtee}.webp`)
 XliconBotInc.sendMessage(m.chat, { sticker: stickerbuffy }, { quoted: m })
 }
 }
-for (let BhosdikaXlicon of ImageXlicon){
-if (budy === BhosdikaXlicon){
-let imagebuffy = fs.readFileSync(`./XliconMedia/image/${BhosdikaXlicon}.jpg`)
+for (let BhosdikaMtee of ImageMtee){
+if (budy === BhosdikaMtee){
+let imagebuffy = fs.readFileSync(`./MteeMedia/image/${BhosdikaMtee}.jpg`)
 XliconBotInc.sendMessage(m.chat, { image: imagebuffy }, { quoted: m })
 }
 }
-for (let BhosdikaXlicon of VideoXlicon){
-if (budy === BhosdikaXlicon){
-let videobuffy = fs.readFileSync(`./XliconMedia/video/${BhosdikaXlicon}.mp4`)
+for (let BhosdikaMtee of VideoMtee){
+if (budy === BhosdikaMtee){
+let videobuffy = fs.readFileSync(`./MteeMedia/video/${BhosdikaMtee}.mp4`)
 XliconBotInc.sendMessage(m.chat, { video: videobuffy }, { quoted: m })
 }
 }
@@ -1448,9 +1448,9 @@ XliconBotInc.sendMessage(m.chat, { video: videobuffy }, { quoted: m })
 const sendapk = (teks) => {
 XliconBotInc.sendMessage(m.chat, { document: teks, mimetype: 'application/vnd.android.package-archive'}, {quoted:m})
 }
-for (let BhosdikaXlicon of ApkXlicon) {
-if (budy === BhosdikaXlicon) {
-let buffer = fs.readFileSync(`./XliconMedia/apk/${BhosdikaXlicon}.apk`)
+for (let BhosdikaMtee of ApkMtee) {
+if (budy === BhosdikaMtee) {
+let buffer = fs.readFileSync(`./MteeMedia/apk/${BhosdikaMtee}.apk`)
 sendapk(buffer)
 }
 }
@@ -1458,9 +1458,9 @@ sendapk(buffer)
 const sendzip = (teks) => {
 XliconBotInc.sendMessage(m.chat, { document: teks, mimetype: 'application/zip'}, {quoted:m})
 }
-for (let BhosdikaXlicon of ZipXlicon) {
-if (budy === BhosdikaXlicon) {
-let buffer = fs.readFileSync(`./XliconMedia/zip/${BhosdikaXlicon}.zip`)
+for (let BhosdikaMtee of ZipMtee) {
+if (budy === BhosdikaMtee) {
+let buffer = fs.readFileSync(`./MteeMedia/zip/${BhosdikaMtee}.zip`)
 sendzip(buffer)
 }
 }
@@ -1468,9 +1468,9 @@ sendzip(buffer)
 const senddocu = (teks) => {
 XliconBotInc.sendMessage(m.chat, { document: teks, mimetype: 'application/pdf'}, {quoted:m})
 }
-for (let BhosdikaXlicon of DocXlicon) {
-if (budy === BhosdikaXlicon) {
-let buffer = fs.readFileSync(`./XliconMedia/doc/${BhosdikaXlicon}.pdf`)
+for (let BhosdikaMtee of DocMtee) {
+if (budy === BhosdikaMtee) {
+let buffer = fs.readFileSync(`./MteeMedia/doc/${BhosdikaMtee}.pdf`)
 senddocu(buffer)
 }
 }
@@ -5742,7 +5742,7 @@ case 'fb':
        
         
       case 'git': case 'gitclone':
-        if (!args[0]) return replygcxlicon(`Where is the link?\nExample :\n${prefix}${command} https://github.com/salmanytofficial/XliconMedia`)
+        if (!args[0]) return replygcxlicon(`Where is the link?\nExample :\n${prefix}${command} https://github.com/salmanytofficial/MteeMedia`)
         if (!isUrl(args[0]) && !args[0].includes('github.com')) return replygcxlicon(`Link invalid!!`)
         await XliconStickWait()        
         let regex1 = /(?:https|git)(?::\/\/|@)github\.com[\/:]([^\/:]+)\/(.+)/i
@@ -8593,7 +8593,7 @@ break;
                     if (!XliconTheCreator) return XliconStickOwner()
                     try {
                         let delb = await XliconBotInc.downloadAndSaveMediaMessage(quoted)
-                        await fsx.copy(delb, './XliconMedia/theme/Xlicon-Video.mp4')
+                        await fsx.copy(delb, './MteeMedia/theme/Mtee-Video.mp4')
                         fs.unlinkSync(delb)
                         replygcxlicon(`Done! 🎉 Video menu successfully set! 🎬`)
                     } catch {
@@ -8607,7 +8607,7 @@ break;
                     if (!XliconTheCreator) return XliconStickOwner()
                     try {
                         let delb = await XliconBotInc.downloadAndSaveMediaMessage(quoted)
-                        await fsx.copy(delb, './XliconMedia/theme/XliconPic.jpg')
+                        await fsx.copy(delb, './MteeMedia/theme/MteePic.jpg')
                         fs.unlinkSync(delb)
                         replygcxlicon(`Done! 🎉 Image menu successfully set! 🖼️`)
                     } catch {
@@ -9206,12 +9206,12 @@ break
       case 'addvideo': {
         if (!XliconTheCreator) return XliconStickOwner();
         if (args.length < 1) return replygcxlicon('🎥 Please provide the video name.');
-        if (VideoXlicon.includes(q)) return replygcxlicon("❌ The name is already in use.");
+        if (VideoMtee.includes(q)) return replygcxlicon("❌ The name is already in use.");
       
         let delb = await XliconBotInc.downloadAndSaveMediaMessage(quoted);
-        VideoXlicon.push(q);
-        await fsx.copy(delb, `./XliconMedia/video/${q}.mp4`);
-        fs.writeFileSync('./XliconMedia/database/xliconvideo.json', JSON.stringify(VideoXlicon));
+        VideoMtee.push(q);
+        await fsx.copy(delb, `./MteeMedia/video/${q}.mp4`);
+        fs.writeFileSync('./MteeMedia/database/mteevideo.json', JSON.stringify(VideoMtee));
         fs.unlinkSync(delb);
       
         replygcxlicon(`✅ Success adding video\nCheck by typing ${prefix}listvideo`);
@@ -9221,12 +9221,12 @@ break
       case 'delvideo': {
         if (!XliconTheCreator) return XliconStickOwner();
         if (args.length < 1) return replygcxlicon('❌ Enter the video name.');
-        if (!VideoXlicon.includes(q)) return replygcxlicon("❌ The name does not exist in the database.");
+        if (!VideoMtee.includes(q)) return replygcxlicon("❌ The name does not exist in the database.");
       
-        let wanu = VideoXlicon.indexOf(q);
-        VideoXlicon.splice(wanu, 1);
-        fs.writeFileSync('./XliconMedia/database/xliconvideo.json', JSON.stringify(VideoXlicon));
-        fs.unlinkSync(`./XliconMedia/video/${q}.mp4`);
+        let wanu = VideoMtee.indexOf(q);
+        VideoMtee.splice(wanu, 1);
+        fs.writeFileSync('./MteeMedia/database/mteevideo.json', JSON.stringify(VideoMtee));
+        fs.unlinkSync(`./MteeMedia/video/${q}.mp4`);
       
         replygcxlicon(`✅ Success deleting video: ${q}`);
       }
@@ -9234,10 +9234,10 @@ break
       
       case 'listvideo': {
         let teks = '🎬┌──⭓「 *Video List* 」\n│\n';
-        for (let x of VideoXlicon) {
+        for (let x of VideoMtee) {
             teks += `│📹 ${x}\n`;
         }
-        teks += `│\n└────────────⭓\n\n*Total: ${VideoXlicon.length} videos*`;
+        teks += `│\n└────────────⭓\n\n*Total: ${VideoMtee.length} videos*`;
         replygcxlicon(teks);
       }
       break;
@@ -9245,12 +9245,12 @@ break
       case 'addimage': {
         if (!XliconTheCreator) return XliconStickOwner();
         if (args.length < 1) return replygcxlicon('🖼️ Please provide the image name.');
-        if (ImageXlicon.includes(q)) return replygcxlicon("❌ The name is already in use.");
+        if (ImageMtee.includes(q)) return replygcxlicon("❌ The name is already in use.");
       
         let delb = await XliconBotInc.downloadAndSaveMediaMessage(quoted);
-        ImageXlicon.push(q);
-        await fsx.copy(delb, `./XliconMedia/image/${q}.jpg`);
-        fs.writeFileSync('./XliconMedia/database/xliconimage.json', JSON.stringify(ImageXlicon));
+        ImageMtee.push(q);
+        await fsx.copy(delb, `./MteeMedia/image/${q}.jpg`);
+        fs.writeFileSync('./MteeMedia/database/mteeimage.json', JSON.stringify(ImageMtee));
         fs.unlinkSync(delb);
       
         replygcxlicon(`✅ Success adding image\nCheck by typing ${prefix}listimage`);
@@ -9260,12 +9260,12 @@ break
       case 'delimage': {
         if (!XliconTheCreator) return XliconStickOwner();
         if (args.length < 1) return replygcxlicon('❌ Enter the image name.');
-        if (!ImageXlicon.includes(q)) return replygcxlicon("❌ The name does not exist in the database.");
+        if (!ImageMtee.includes(q)) return replygcxlicon("❌ The name does not exist in the database.");
       
-        let wanu = ImageXlicon.indexOf(q);
-        ImageXlicon.splice(wanu, 1);
-        fs.writeFileSync('./XliconMedia/database/xliconimage.json', JSON.stringify(ImageXlicon));
-        fs.unlinkSync(`./XliconMedia/image/${q}.jpg`);
+        let wanu = ImageMtee.indexOf(q);
+        ImageMtee.splice(wanu, 1);
+        fs.writeFileSync('./MteeMedia/database/mteeimage.json', JSON.stringify(ImageMtee));
+        fs.unlinkSync(`./MteeMedia/image/${q}.jpg`);
       
         replygcxlicon(`✅ Success deleting image: ${q}`);
       }
@@ -9273,10 +9273,10 @@ break
       
       case 'listimage': {
         let teks = '🖼️┌──⭓「 *Image List* 」\n│\n';
-        for (let x of ImageXlicon) {
+        for (let x of ImageMtee) {
             teks += `│🖼️ ${x}\n`;
         }
-        teks += `│\n└────────────⭓\n\n*Totally there are: ${ImageXlicon.length}*`;
+        teks += `│\n└────────────⭓\n\n*Totally there are: ${ImageMtee.length}*`;
         replygcxlicon(teks);
       }
       break;
@@ -9284,11 +9284,11 @@ break
       case 'addsticker': {
         if (!XliconTheCreator) return XliconStickOwner();
         if (args.length < 1) return replygcxlicon('💬 What’s the sticker name?');
-        if (StickerXlicon.includes(q)) return replygcxlicon("❌ The name is already in use");
+        if (StickerMtee.includes(q)) return replygcxlicon("❌ The name is already in use");
         let delb = await XliconBotInc.downloadAndSaveMediaMessage(quoted);
-        StickerXlicon.push(q);
-        await fsx.copy(delb, `./XliconMedia/sticker/${q}.webp`);
-        fs.writeFileSync('./XliconMedia/database/xliconsticker.json', JSON.stringify(StickerXlicon));
+        StickerMtee.push(q);
+        await fsx.copy(delb, `./MteeMedia/sticker/${q}.webp`);
+        fs.writeFileSync('./MteeMedia/database/mteesticker.json', JSON.stringify(StickerMtee));
         fs.unlinkSync(delb);
         replygcxlicon(`✅ Success Adding Sticker\nCheck by typing ${prefix}liststicker`);
       }
@@ -9297,21 +9297,21 @@ break
       case 'delsticker': {
         if (!XliconTheCreator) return XliconStickOwner();
         if (args.length < 1) return replygcxlicon('❌ Enter the sticker name');
-        if (!StickerXlicon.includes(q)) return replygcxlicon("❌ The name does not exist in the database");
-        let wanu = StickerXlicon.indexOf(q);
-        StickerXlicon.splice(wanu, 1);
-        fs.writeFileSync('./XliconMedia/database/xliconsticker.json', JSON.stringify(StickerXlicon));
-        fs.unlinkSync(`./XliconMedia/sticker/${q}.webp`);
+        if (!StickerMtee.includes(q)) return replygcxlicon("❌ The name does not exist in the database");
+        let wanu = StickerMtee.indexOf(q);
+        StickerMtee.splice(wanu, 1);
+        fs.writeFileSync('./MteeMedia/database/mteesticker.json', JSON.stringify(StickerMtee));
+        fs.unlinkSync(`./MteeMedia/sticker/${q}.webp`);
         replygcxlicon(`✅ Success deleting sticker ${q}`);
       }
       break;
       
       case 'liststicker': {
         let teks = '💬┌──⭓「 *Sticker List* 」\n│\n';
-        for (let x of StickerXlicon) {
+        for (let x of StickerMtee) {
             teks += `│💥 ${x}\n`;
         }
-        teks += `│\n└────────────⭓\n\n*Totally there are: ${StickerXlicon.length}*`;
+        teks += `│\n└────────────⭓\n\n*Totally there are: ${StickerMtee.length}*`;
         replygcxlicon(teks);
       }
       break;
@@ -9319,11 +9319,11 @@ break
       case 'addvn': {
         if (!XliconTheCreator) return XliconStickOwner();
         if (args.length < 1) return replygcxlicon('🎵 What’s the audio name?');
-        if (VoiceNoteXlicon.includes(q)) return replygcxlicon("❌ The name is already in use");
+        if (VoiceNoteMtee.includes(q)) return replygcxlicon("❌ The name is already in use");
         let delb = await XliconBotInc.downloadAndSaveMediaMessage(quoted);
-        VoiceNoteXlicon.push(q);
-        await fsx.copy(delb, `./XliconMedia/audio/${q}.mp3`);
-        fs.writeFileSync('./XliconMedia/database/xliconvn.json', JSON.stringify(VoiceNoteXlicon));
+        VoiceNoteMtee.push(q);
+        await fsx.copy(delb, `./MteeMedia/audio/${q}.mp3`);
+        fs.writeFileSync('./MteeMedia/database/mteevn.json', JSON.stringify(VoiceNoteMtee));
         fs.unlinkSync(delb);
         replygcxlicon(`✅ Success Adding Audio\nCheck by typing ${prefix}listvn`);
       }
@@ -9332,21 +9332,21 @@ break
       case 'delvn': {
         if (!XliconTheCreator) return XliconStickOwner();
         if (args.length < 1) return replygcxlicon('❌ Enter the vn name');
-        if (!VoiceNoteXlicon.includes(q)) return replygcxlicon("❌ The name does not exist in the database");
-        let wanu = VoiceNoteXlicon.indexOf(q);
-        VoiceNoteXlicon.splice(wanu, 1);
-        fs.writeFileSync('./XliconMedia/database/xliconvn.json', JSON.stringify(VoiceNoteXlicon));
-        fs.unlinkSync(`./XliconMedia/audio/${q}.mp3`);
+        if (!VoiceNoteMtee.includes(q)) return replygcxlicon("❌ The name does not exist in the database");
+        let wanu = VoiceNoteMtee.indexOf(q);
+        VoiceNoteMtee.splice(wanu, 1);
+        fs.writeFileSync('./MteeMedia/database/mteevn.json', JSON.stringify(VoiceNoteMtee));
+        fs.unlinkSync(`./MteeMedia/audio/${q}.mp3`);
         replygcxlicon(`✅ Success deleting vn ${q}`);
       }
       break;
       
       case 'listvn': {
         let teks = '🎵┌──⭓「 *VN List* 」\n│\n';
-        for (let x of VoiceNoteXlicon) {
+        for (let x of VoiceNoteMtee) {
             teks += `│🎶 ${x}\n`;
         }
-        teks += `│\n└────────────⭓\n\n*Totally there are: ${VoiceNoteXlicon.length}*`;
+        teks += `│\n└────────────⭓\n\n*Totally there are: ${VoiceNoteMtee.length}*`;
         replygcxlicon(teks);
       }
       break;
@@ -9356,11 +9356,11 @@ break
         if (args.length < 1) return replygcxlicon('📦 What’s the zip name?');
         let teks = `${text}`;
         {
-            if (ZipXlicon.includes(teks)) return replygcxlicon("❌ This name is already in use");
+            if (ZipMtee.includes(teks)) return replygcxlicon("❌ This name is already in use");
             let delb = await XliconBotInc.downloadAndSaveMediaMessage(quoted);
-            ZipXlicon.push(teks);
-            await fsx.copy(delb, `./XliconMedia/zip/${teks}.zip`);
-            fs.writeFileSync('./XliconMedia/database/zip.json', JSON.stringify(ZipXlicon));
+            ZipMtee.push(teks);
+            await fsx.copy(delb, `./MteeMedia/zip/${teks}.zip`);
+            fs.writeFileSync('./MteeMedia/database/zip.json', JSON.stringify(ZipMtee));
             fs.unlinkSync(delb);
             replygcxlicon(`✅ Success Adding Zip\nTo check type ${prefix}listzip`);
         }
@@ -9372,11 +9372,11 @@ break
         if (args.length < 1) return replygcxlicon('❌ Enter the text in the zip list');
         let teks = `${text}`;
         {
-            if (!ZipXlicon.includes(teks)) return replygcxlicon("❌ This name does not exist in the database");
-            let wanu = ZipXlicon.indexOf(teks);
-            ZipXlicon.splice(wanu, 1);
-            fs.writeFileSync('./XliconMedia/database/zip.json', JSON.stringify(ZipXlicon));
-            fs.unlinkSync(`./XliconMedia/zip/${teks}.zip`);
+            if (!ZipMtee.includes(teks)) return replygcxlicon("❌ This name does not exist in the database");
+            let wanu = ZipMtee.indexOf(teks);
+            ZipMtee.splice(wanu, 1);
+            fs.writeFileSync('./MteeMedia/database/zip.json', JSON.stringify(ZipMtee));
+            fs.unlinkSync(`./MteeMedia/zip/${teks}.zip`);
             replygcxlicon(`✅ Successfully deleted zip ${teks}`);
         }
       }
@@ -9384,10 +9384,10 @@ break
       
       case 'listzip': {
         let teksooooo = '📦┌──⭓「 *ZIP LIST* 」\n│\n';
-        for (let x of ZipXlicon) {
+        for (let x of ZipMtee) {
             teksooooo += `│🗂️ ${x}\n`;
         }
-        teksooooo += `│\n└────────────⭓\n\n*Total: ${ZipXlicon.length}*`;
+        teksooooo += `│\n└────────────⭓\n\n*Total: ${ZipMtee.length}*`;
         replygcxlicon(teksooooo);
       }
       break;
@@ -9399,11 +9399,11 @@ break
         if (args.length < 1) return replygcxlicon('📱 What is the name of the apk?');
         let teks = `${text}`;
         {
-            if (ApkXlicon.includes(teks)) return replygcxlicon("❌ This name is already in use");
+            if (ApkMtee.includes(teks)) return replygcxlicon("❌ This name is already in use");
             let delb = await XliconBotInc.downloadAndSaveMediaMessage(quoted);
-            ApkXlicon.push(teks);
-            await fsx.copy(delb, `./XliconMedia/apk/${teks}.apk`);
-            fs.writeFileSync('./XliconMedia/database/apk.json', JSON.stringify(ApkXlicon));
+            ApkMtee.push(teks);
+            await fsx.copy(delb, `./MteeMedia/apk/${teks}.apk`);
+            fs.writeFileSync('./MteeMedia/database/apk.json', JSON.stringify(ApkMtee));
             fs.unlinkSync(delb);
             replygcxlicon(`✅ Successfully added apk\nTo Check type ${prefix}listapk`);
         }
@@ -9416,11 +9416,11 @@ break
         if (args.length < 1) return replygcxlicon('❌ Enter the name of the apk to delete');
         let teks = `${text}`;
         {
-            if (!ApkXlicon.includes(teks)) return replygcxlicon("❌ This name does not exist in the database");
-            let wanu = ApkXlicon.indexOf(teks);
-            ApkXlicon.splice(wanu, 1);
-            fs.writeFileSync('./XliconMedia/database/apk.json', JSON.stringify(ApkXlicon));
-            fs.unlinkSync(`./XliconMedia/apk/${teks}.apk`);
+            if (!ApkMtee.includes(teks)) return replygcxlicon("❌ This name does not exist in the database");
+            let wanu = ApkMtee.indexOf(teks);
+            ApkMtee.splice(wanu, 1);
+            fs.writeFileSync('./MteeMedia/database/apk.json', JSON.stringify(ApkMtee));
+            fs.unlinkSync(`./MteeMedia/apk/${teks}.apk`);
             replygcxlicon(`✅ Successfully deleted Apk: ${teks}`);
         }
       }
@@ -9428,10 +9428,10 @@ break
       
       case 'listapk': {
         let teksoooooo = '📱┌──⭓「 *APK LIST* 」\n│\n';
-        for (let x of ApkXlicon) {
+        for (let x of ApkMtee) {
             teksoooooo += `│📦 ${x}\n`;
         }
-        teksoooooo += `│\n└────────────⭓\n\n*Total: ${ApkXlicon.length} APKs*`;
+        teksoooooo += `│\n└────────────⭓\n\n*Total: ${ApkMtee.length} APKs*`;
         replygcxlicon(teksoooooo);
       }
       break;
@@ -9442,11 +9442,11 @@ break
         if (args.length < 1) return replygcxlicon('📄 What is the name of the pdf?');
         let teks = `${text}`;
         {
-            if (DocXlicon.includes(teks)) return replygcxlicon("❌ This name is already in use");
+            if (DocMtee.includes(teks)) return replygcxlicon("❌ This name is already in use");
             let delb = await XliconBotInc.downloadAndSaveMediaMessage(quoted);
-            DocXlicon.push(teks);
-            await fsx.copy(delb, `./XliconMedia/doc/${teks}.pdf`);
-            fs.writeFileSync('./XliconMedia/database/doc.json', JSON.stringify(DocXlicon));
+            DocMtee.push(teks);
+            await fsx.copy(delb, `./MteeMedia/doc/${teks}.pdf`);
+            fs.writeFileSync('./MteeMedia/database/doc.json', JSON.stringify(DocMtee));
             fs.unlinkSync(delb);
             replygcxlicon(`✅ Successfully added PDF\nTo check type ${prefix}listpdf`);
         }
@@ -9459,11 +9459,11 @@ break
         if (args.length < 1) return replygcxlicon('❌ Enter the name of the PDF to delete');
         let teks = `${text}`;
         {
-            if (!DocXlicon.includes(teks)) return replygcxlicon("❌ This name does not exist in the database");
-            let wanu = DocXlicon.indexOf(teks);
-            DocXlicon.splice(wanu, 1);
-            fs.writeFileSync('./XliconMedia/database/doc.json', JSON.stringify(DocXlicon));
-            fs.unlinkSync(`./XliconMedia/doc/${teks}.pdf`);
+            if (!DocMtee.includes(teks)) return replygcxlicon("❌ This name does not exist in the database");
+            let wanu = DocMtee.indexOf(teks);
+            DocMtee.splice(wanu, 1);
+            fs.writeFileSync('./MteeMedia/database/doc.json', JSON.stringify(DocMtee));
+            fs.unlinkSync(`./MteeMedia/doc/${teks}.pdf`);
             replygcxlicon(`✅ Successfully deleted PDF: ${teks}`);
         }
       }
@@ -9471,10 +9471,10 @@ break
       
       case 'listpdf': {
         let teksoooo = '📄┌──⭓「 *PDF LIST* 」\n│\n';
-        for (let x of DocXlicon) {
+        for (let x of DocMtee) {
             teksoooo += `│📑 ${x}\n`;
         }
-        teksoooo += `│\n└────────────⭓\n\n*Total: ${DocXlicon.length} PDFs*`;
+        teksoooo += `│\n└────────────⭓\n\n*Total: ${DocMtee.length} PDFs*`;
         replygcxlicon(teksoooo);
       }
       break;
@@ -13986,7 +13986,7 @@ case 'score':
                 "title": global.botname, 
                 "containsAutoReply": true,
                 "mediaType": 1, 
-                "thumbnail": fs.readFileSync("./XliconMedia/theme/XliconPic.jpg"),
+                "thumbnail": fs.readFileSync("./MteeMedia/theme/MteePic.jpg"),
                 "mediaUrl": `${wagc}`,
                 "sourceUrl": `${wagc}`
             }
@@ -14403,7 +14403,7 @@ list.push({
                                 showAdAttribution: true,
                                 title: botname,
                                 body: ownername,
-                                thumbnail: fs.readFileSync('./XliconMedia/theme/XliconPic.jpg'),
+                                thumbnail: fs.readFileSync('./MteeMedia/theme/MteePic.jpg'),
                                 sourceUrl: wagc,
                                 mediaType: 1,
                                 renderLargerThumbnail: true
@@ -15098,7 +15098,7 @@ ${readmore}
 ╰───────────❍`
 if (typemenu === 'v1') {
   XliconBotInc.sendMessage(m.chat, {
-      image: fs.readFileSync('./XliconMedia/theme/XliconPic.jpg'),
+      image: fs.readFileSync('./MteeMedia/theme/MteePic.jpg'),
       caption: xmenu_oh
   }, {
       quoted: m
@@ -15111,7 +15111,7 @@ if (typemenu === 'v1') {
               showAdAttribution: true,
               title: botname,
               body: ownername,
-              thumbnail: fs.readFileSync('./XliconMedia/theme/XliconPic.jpg'),
+              thumbnail: fs.readFileSync('./MteeMedia/theme/MteePic.jpg'),
               sourceUrl: wagc,
               mediaType: 1,
               renderLargerThumbnail: true
@@ -15122,14 +15122,14 @@ if (typemenu === 'v1') {
   })
 } else if (typemenu === 'v3') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh
   }, {
       quoted: m
   })
 } else if (typemenu === 'v4') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh,
       gifPlayback: true
   }, {
@@ -15155,7 +15155,7 @@ if (typemenu === 'v1') {
   }, { quoted: m })
 } else if (typemenu === 'v6') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       gifPlayback: true,
       caption: xmenu_oh,
       contextInfo: {
@@ -15173,7 +15173,7 @@ if (typemenu === 'v1') {
   })
 } else if (typemenu === 'v7') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh,
       gifPlayback: true,
       contextInfo: {
@@ -15873,7 +15873,7 @@ let xmenu_oh = `
 ╰──────❍`
 if (typemenu === 'v1') {
   XliconBotInc.sendMessage(m.chat, {
-      image: fs.readFileSync('./XliconMedia/theme/XliconPic.jpg'),
+      image: fs.readFileSync('./MteeMedia/theme/MteePic.jpg'),
       caption: xmenu_oh
   }, {
       quoted: m
@@ -15886,7 +15886,7 @@ if (typemenu === 'v1') {
               showAdAttribution: true,
               title: botname,
               body: ownername,
-              thumbnail: fs.readFileSync('./XliconMedia/theme/XliconPic.jpg'),
+              thumbnail: fs.readFileSync('./MteeMedia/theme/MteePic.jpg'),
               sourceUrl: wagc,
               mediaType: 1,
               renderLargerThumbnail: true
@@ -15897,14 +15897,14 @@ if (typemenu === 'v1') {
   })
 } else if (typemenu === 'v3') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh
   }, {
       quoted: m
   })
 } else if (typemenu === 'v4') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh,
       gifPlayback: true
   }, {
@@ -15930,7 +15930,7 @@ if (typemenu === 'v1') {
   }, { quoted: m })
 } else if (typemenu === 'v6') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       gifPlayback: true,
       caption: xmenu_oh,
       contextInfo: {
@@ -15948,7 +15948,7 @@ if (typemenu === 'v1') {
   })
 } else if (typemenu === 'v7') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh,
       gifPlayback: true,
       contextInfo: {
@@ -16072,7 +16072,7 @@ let xmenu_oh = `
 ╰───────────❍`
 if (typemenu === 'v1') {
   XliconBotInc.sendMessage(m.chat, {
-      image: fs.readFileSync('./XliconMedia/theme/XliconPic.jpg'),
+      image: fs.readFileSync('./MteeMedia/theme/MteePic.jpg'),
       caption: xmenu_oh
   }, {
       quoted: m
@@ -16085,7 +16085,7 @@ if (typemenu === 'v1') {
               showAdAttribution: true,
               title: botname,
               body: ownername,
-              thumbnail: fs.readFileSync('./XliconMedia/theme/XliconPic.jpg'),
+              thumbnail: fs.readFileSync('./MteeMedia/theme/MteePic.jpg'),
               sourceUrl: wagc,
               mediaType: 1,
               renderLargerThumbnail: true
@@ -16096,14 +16096,14 @@ if (typemenu === 'v1') {
   })
 } else if (typemenu === 'v3') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh
   }, {
       quoted: m
   })
 } else if (typemenu === 'v4') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh,
       gifPlayback: true
   }, {
@@ -16129,7 +16129,7 @@ if (typemenu === 'v1') {
   }, { quoted: m })
 } else if (typemenu === 'v6') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       gifPlayback: true,
       caption: xmenu_oh,
       contextInfo: {
@@ -16147,7 +16147,7 @@ if (typemenu === 'v1') {
   })
 } else if (typemenu === 'v7') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh,
       gifPlayback: true,
       contextInfo: {
@@ -16249,7 +16249,7 @@ let xmenu_oh = `
 ╰──────❍`
 if (typemenu === 'v1') {
   XliconBotInc.sendMessage(m.chat, {
-      image: fs.readFileSync('./XliconMedia/theme/XliconPic.jpg'),
+      image: fs.readFileSync('./MteeMedia/theme/MteePic.jpg'),
       caption: xmenu_oh
   }, {
       quoted: m
@@ -16262,7 +16262,7 @@ if (typemenu === 'v1') {
               showAdAttribution: true,
               title: botname,
               body: ownername,
-              thumbnail: fs.readFileSync('./XliconMedia/theme/XliconPic.jpg'),
+              thumbnail: fs.readFileSync('./MteeMedia/theme/MteePic.jpg'),
               sourceUrl: wagc,
               mediaType: 1,
               renderLargerThumbnail: true
@@ -16273,14 +16273,14 @@ if (typemenu === 'v1') {
   })
 } else if (typemenu === 'v3') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh
   }, {
       quoted: m
   })
 } else if (typemenu === 'v4') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh,
       gifPlayback: true
   }, {
@@ -16306,7 +16306,7 @@ if (typemenu === 'v1') {
   }, { quoted: m })
 } else if (typemenu === 'v6') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       gifPlayback: true,
       caption: xmenu_oh,
       contextInfo: {
@@ -16324,7 +16324,7 @@ if (typemenu === 'v1') {
   })
 } else if (typemenu === 'v7') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh,
       gifPlayback: true,
       contextInfo: {
@@ -16378,7 +16378,7 @@ let xmenu_oh = `
 ╰──────❍`
 if (typemenu === 'v1') {
   XliconBotInc.sendMessage(m.chat, {
-      image: fs.readFileSync('./XliconMedia/theme/XliconPic.jpg'),
+      image: fs.readFileSync('./MteeMedia/theme/MteePic.jpg'),
       caption: xmenu_oh
   }, {
       quoted: m
@@ -16391,7 +16391,7 @@ if (typemenu === 'v1') {
               showAdAttribution: true,
               title: botname,
               body: ownername,
-              thumbnail: fs.readFileSync('./XliconMedia/theme/XliconPic.jpg'),
+              thumbnail: fs.readFileSync('./MteeMedia/theme/MteePic.jpg'),
               sourceUrl: wagc,
               mediaType: 1,
               renderLargerThumbnail: true
@@ -16402,14 +16402,14 @@ if (typemenu === 'v1') {
   })
 } else if (typemenu === 'v3') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh
   }, {
       quoted: m
   })
 } else if (typemenu === 'v4') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh,
       gifPlayback: true
   }, {
@@ -16435,7 +16435,7 @@ if (typemenu === 'v1') {
   }, { quoted: m })
 } else if (typemenu === 'v6') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       gifPlayback: true,
       caption: xmenu_oh,
       contextInfo: {
@@ -16453,7 +16453,7 @@ if (typemenu === 'v1') {
   })
 } else if (typemenu === 'v7') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh,
       gifPlayback: true,
       contextInfo: {
@@ -16537,7 +16537,7 @@ let xmenu_oh = `
 ╰──────❍`
 if (typemenu === 'v1') {
   XliconBotInc.sendMessage(m.chat, {
-      image: fs.readFileSync('./XliconMedia/theme/XliconPic.jpg'),
+      image: fs.readFileSync('./MteeMedia/theme/MteePic.jpg'),
       caption: xmenu_oh
   }, {
       quoted: m
@@ -16550,7 +16550,7 @@ if (typemenu === 'v1') {
               showAdAttribution: true,
               title: botname,
               body: ownername,
-              thumbnail: fs.readFileSync('./XliconMedia/theme/XliconPic.jpg'),
+              thumbnail: fs.readFileSync('./MteeMedia/theme/MteePic.jpg'),
               sourceUrl: wagc,
               mediaType: 1,
               renderLargerThumbnail: true
@@ -16561,14 +16561,14 @@ if (typemenu === 'v1') {
   })
 } else if (typemenu === 'v3') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh
   }, {
       quoted: m
   })
 } else if (typemenu === 'v4') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh,
       gifPlayback: true
   }, {
@@ -16594,7 +16594,7 @@ if (typemenu === 'v1') {
   }, { quoted: m })
 } else if (typemenu === 'v6') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       gifPlayback: true,
       caption: xmenu_oh,
       contextInfo: {
@@ -16612,7 +16612,7 @@ if (typemenu === 'v1') {
   })
 } else if (typemenu === 'v7') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh,
       gifPlayback: true,
       contextInfo: {
@@ -16700,7 +16700,7 @@ let xmenu_oh = `
 ╰──────❍`
 if (typemenu === 'v1') {
   XliconBotInc.sendMessage(m.chat, {
-      image: fs.readFileSync('./XliconMedia/theme/XliconPic.jpg'),
+      image: fs.readFileSync('./MteeMedia/theme/MteePic.jpg'),
       caption: xmenu_oh
   }, {
       quoted: m
@@ -16713,7 +16713,7 @@ if (typemenu === 'v1') {
               showAdAttribution: true,
               title: botname,
               body: ownername,
-              thumbnail: fs.readFileSync('./XliconMedia/theme/XliconPic.jpg'),
+              thumbnail: fs.readFileSync('./MteeMedia/theme/MteePic.jpg'),
               sourceUrl: wagc,
               mediaType: 1,
               renderLargerThumbnail: true
@@ -16724,14 +16724,14 @@ if (typemenu === 'v1') {
   })
 } else if (typemenu === 'v3') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh
   }, {
       quoted: m
   })
 } else if (typemenu === 'v4') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh,
       gifPlayback: true
   }, {
@@ -16757,7 +16757,7 @@ if (typemenu === 'v1') {
   }, { quoted: m })
 } else if (typemenu === 'v6') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       gifPlayback: true,
       caption: xmenu_oh,
       contextInfo: {
@@ -16775,7 +16775,7 @@ if (typemenu === 'v1') {
   })
 } else if (typemenu === 'v7') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh,
       gifPlayback: true,
       contextInfo: {
@@ -16831,7 +16831,7 @@ let xmenu_oh = `
 ╰──────❍`
 if (typemenu === 'v1') {
   XliconBotInc.sendMessage(m.chat, {
-      image: fs.readFileSync('./XliconMedia/theme/XliconPic.jpg'),
+      image: fs.readFileSync('./MteeMedia/theme/MteePic.jpg'),
       caption: xmenu_oh
   }, {
       quoted: m
@@ -16844,7 +16844,7 @@ if (typemenu === 'v1') {
               showAdAttribution: true,
               title: botname,
               body: ownername,
-              thumbnail: fs.readFileSync('./XliconMedia/theme/XliconPic.jpg'),
+              thumbnail: fs.readFileSync('./MteeMedia/theme/MteePic.jpg'),
               sourceUrl: wagc,
               mediaType: 1,
               renderLargerThumbnail: true
@@ -16855,14 +16855,14 @@ if (typemenu === 'v1') {
   })
 } else if (typemenu === 'v3') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh
   }, {
       quoted: m
   })
 } else if (typemenu === 'v4') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh,
       gifPlayback: true
   }, {
@@ -16888,7 +16888,7 @@ if (typemenu === 'v1') {
   }, { quoted: m })
 } else if (typemenu === 'v6') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       gifPlayback: true,
       caption: xmenu_oh,
       contextInfo: {
@@ -16906,7 +16906,7 @@ if (typemenu === 'v1') {
   })
 } else if (typemenu === 'v7') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh,
       gifPlayback: true,
       contextInfo: {
@@ -17007,7 +17007,7 @@ let xmenu_oh = `
 ╰──────❍`
 if (typemenu === 'v1') {
   XliconBotInc.sendMessage(m.chat, {
-      image: fs.readFileSync('./XliconMedia/theme/XliconPic.jpg'),
+      image: fs.readFileSync('./MteeMedia/theme/MteePic.jpg'),
       caption: xmenu_oh
   }, {
       quoted: m
@@ -17020,7 +17020,7 @@ if (typemenu === 'v1') {
               showAdAttribution: true,
               title: botname,
               body: ownername,
-              thumbnail: fs.readFileSync('./XliconMedia/theme/XliconPic.jpg'),
+              thumbnail: fs.readFileSync('./MteeMedia/theme/MteePic.jpg'),
               sourceUrl: wagc,
               mediaType: 1,
               renderLargerThumbnail: true
@@ -17031,14 +17031,14 @@ if (typemenu === 'v1') {
   })
 } else if (typemenu === 'v3') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh
   }, {
       quoted: m
   })
 } else if (typemenu === 'v4') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh,
       gifPlayback: true
   }, {
@@ -17064,7 +17064,7 @@ if (typemenu === 'v1') {
   }, { quoted: m })
 } else if (typemenu === 'v6') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       gifPlayback: true,
       caption: xmenu_oh,
       contextInfo: {
@@ -17082,7 +17082,7 @@ if (typemenu === 'v1') {
   })
 } else if (typemenu === 'v7') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh,
       gifPlayback: true,
       contextInfo: {
@@ -17134,7 +17134,7 @@ let xmenu_oh = `
 ╰──────❍`
 if (typemenu === 'v1') {
   XliconBotInc.sendMessage(m.chat, {
-      image: fs.readFileSync('./XliconMedia/theme/XliconPic.jpg'),
+      image: fs.readFileSync('./MteeMedia/theme/MteePic.jpg'),
       caption: xmenu_oh
   }, {
       quoted: m
@@ -17147,7 +17147,7 @@ if (typemenu === 'v1') {
               showAdAttribution: true,
               title: botname,
               body: ownername,
-              thumbnail: fs.readFileSync('./XliconMedia/theme/XliconPic.jpg'),
+              thumbnail: fs.readFileSync('./MteeMedia/theme/MteePic.jpg'),
               sourceUrl: wagc,
               mediaType: 1,
               renderLargerThumbnail: true
@@ -17158,14 +17158,14 @@ if (typemenu === 'v1') {
   })
 } else if (typemenu === 'v3') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh
   }, {
       quoted: m
   })
 } else if (typemenu === 'v4') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh,
       gifPlayback: true
   }, {
@@ -17191,7 +17191,7 @@ if (typemenu === 'v1') {
   }, { quoted: m })
 } else if (typemenu === 'v6') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       gifPlayback: true,
       caption: xmenu_oh,
       contextInfo: {
@@ -17209,7 +17209,7 @@ if (typemenu === 'v1') {
   })
 } else if (typemenu === 'v7') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh,
       gifPlayback: true,
       contextInfo: {
@@ -17259,7 +17259,7 @@ let xmenu_oh = `
 ╰──────❍`
 if (typemenu === 'v1') {
   XliconBotInc.sendMessage(m.chat, {
-      image: fs.readFileSync('./XliconMedia/theme/XliconPic.jpg'),
+      image: fs.readFileSync('./MteeMedia/theme/MteePic.jpg'),
       caption: xmenu_oh
   }, {
       quoted: m
@@ -17272,7 +17272,7 @@ if (typemenu === 'v1') {
               showAdAttribution: true,
               title: botname,
               body: ownername,
-              thumbnail: fs.readFileSync('./XliconMedia/theme/XliconPic.jpg'),
+              thumbnail: fs.readFileSync('./MteeMedia/theme/MteePic.jpg'),
               sourceUrl: wagc,
               mediaType: 1,
               renderLargerThumbnail: true
@@ -17283,14 +17283,14 @@ if (typemenu === 'v1') {
   })
 } else if (typemenu === 'v3') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh
   }, {
       quoted: m
   })
 } else if (typemenu === 'v4') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh,
       gifPlayback: true
   }, {
@@ -17316,7 +17316,7 @@ if (typemenu === 'v1') {
   }, { quoted: m })
 } else if (typemenu === 'v6') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       gifPlayback: true,
       caption: xmenu_oh,
       contextInfo: {
@@ -17334,7 +17334,7 @@ if (typemenu === 'v1') {
   })
 } else if (typemenu === 'v7') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh,
       gifPlayback: true,
       contextInfo: {
@@ -17396,7 +17396,7 @@ let xmenu_oh = `
 ╰──────❍`
 if (typemenu === 'v1') {
   XliconBotInc.sendMessage(m.chat, {
-      image: fs.readFileSync('./XliconMedia/theme/XliconPic.jpg'),
+      image: fs.readFileSync('./MteeMedia/theme/MteePic.jpg'),
       caption: xmenu_oh
   }, {
       quoted: m
@@ -17409,7 +17409,7 @@ if (typemenu === 'v1') {
               showAdAttribution: true,
               title: botname,
               body: ownername,
-              thumbnail: fs.readFileSync('./XliconMedia/theme/XliconPic.jpg'),
+              thumbnail: fs.readFileSync('./MteeMedia/theme/MteePic.jpg'),
               sourceUrl: wagc,
               mediaType: 1,
               renderLargerThumbnail: true
@@ -17420,14 +17420,14 @@ if (typemenu === 'v1') {
   })
 } else if (typemenu === 'v3') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh
   }, {
       quoted: m
   })
 } else if (typemenu === 'v4') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh,
       gifPlayback: true
   }, {
@@ -17453,7 +17453,7 @@ if (typemenu === 'v1') {
   }, { quoted: m })
 } else if (typemenu === 'v6') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       gifPlayback: true,
       caption: xmenu_oh,
       contextInfo: {
@@ -17471,7 +17471,7 @@ if (typemenu === 'v1') {
   })
 } else if (typemenu === 'v7') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh,
       gifPlayback: true,
       contextInfo: {
@@ -17529,7 +17529,7 @@ let xmenu_oh = `
 ╰──────❍`
 if (typemenu === 'v1') {
   XliconBotInc.sendMessage(m.chat, {
-      image: fs.readFileSync('./XliconMedia/theme/XliconPic.jpg'),
+      image: fs.readFileSync('./MteeMedia/theme/MteePic.jpg'),
       caption: xmenu_oh
   }, {
       quoted: m
@@ -17542,7 +17542,7 @@ if (typemenu === 'v1') {
               showAdAttribution: true,
               title: botname,
               body: ownername,
-              thumbnail: fs.readFileSync('./XliconMedia/theme/XliconPic.jpg'),
+              thumbnail: fs.readFileSync('./MteeMedia/theme/MteePic.jpg'),
               sourceUrl: wagc,
               mediaType: 1,
               renderLargerThumbnail: true
@@ -17553,14 +17553,14 @@ if (typemenu === 'v1') {
   })
 } else if (typemenu === 'v3') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh
   }, {
       quoted: m
   })
 } else if (typemenu === 'v4') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh,
       gifPlayback: true
   }, {
@@ -17586,7 +17586,7 @@ if (typemenu === 'v1') {
   }, { quoted: m })
 } else if (typemenu === 'v6') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       gifPlayback: true,
       caption: xmenu_oh,
       contextInfo: {
@@ -17604,7 +17604,7 @@ if (typemenu === 'v1') {
   })
 } else if (typemenu === 'v7') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh,
       gifPlayback: true,
       contextInfo: {
@@ -17714,7 +17714,7 @@ let xmenu_oh = `
 ╰──────❍`
 if (typemenu === 'v1') {
   XliconBotInc.sendMessage(m.chat, {
-      image: fs.readFileSync('./XliconMedia/theme/XliconPic.jpg'),
+      image: fs.readFileSync('./MteeMedia/theme/MteePic.jpg'),
       caption: xmenu_oh
   }, {
       quoted: m
@@ -17727,7 +17727,7 @@ if (typemenu === 'v1') {
               showAdAttribution: true,
               title: botname,
               body: ownername,
-              thumbnail: fs.readFileSync('./XliconMedia/theme/XliconPic.jpg'),
+              thumbnail: fs.readFileSync('./MteeMedia/theme/MteePic.jpg'),
               sourceUrl: wagc,
               mediaType: 1,
               renderLargerThumbnail: true
@@ -17738,14 +17738,14 @@ if (typemenu === 'v1') {
   })
 } else if (typemenu === 'v3') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh
   }, {
       quoted: m
   })
 } else if (typemenu === 'v4') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh,
       gifPlayback: true
   }, {
@@ -17771,7 +17771,7 @@ if (typemenu === 'v1') {
   }, { quoted: m })
 } else if (typemenu === 'v6') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       gifPlayback: true,
       caption: xmenu_oh,
       contextInfo: {
@@ -17789,7 +17789,7 @@ if (typemenu === 'v1') {
   })
 } else if (typemenu === 'v7') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh,
       gifPlayback: true,
       contextInfo: {
@@ -17840,7 +17840,7 @@ let xmenu_oh = `
 ╰──────❍`
 if (typemenu === 'v1') {
   XliconBotInc.sendMessage(m.chat, {
-      image: fs.readFileSync('./XliconMedia/theme/XliconPic.jpg'),
+      image: fs.readFileSync('./MteeMedia/theme/MteePic.jpg'),
       caption: xmenu_oh
   }, {
       quoted: m
@@ -17853,7 +17853,7 @@ if (typemenu === 'v1') {
               showAdAttribution: true,
               title: botname,
               body: ownername,
-              thumbnail: fs.readFileSync('./XliconMedia/theme/XliconPic.jpg'),
+              thumbnail: fs.readFileSync('./MteeMedia/theme/MteePic.jpg'),
               sourceUrl: wagc,
               mediaType: 1,
               renderLargerThumbnail: true
@@ -17864,14 +17864,14 @@ if (typemenu === 'v1') {
   })
 } else if (typemenu === 'v3') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh
   }, {
       quoted: m
   })
 } else if (typemenu === 'v4') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh,
       gifPlayback: true
   }, {
@@ -17897,7 +17897,7 @@ if (typemenu === 'v1') {
   }, { quoted: m })
 } else if (typemenu === 'v6') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       gifPlayback: true,
       caption: xmenu_oh,
       contextInfo: {
@@ -17915,7 +17915,7 @@ if (typemenu === 'v1') {
   })
 } else if (typemenu === 'v7') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh,
       gifPlayback: true,
       contextInfo: {
@@ -18104,7 +18104,7 @@ let xmenu_oh = `
 ╰──────❍`
 if (typemenu === 'v1') {
   XliconBotInc.sendMessage(m.chat, {
-      image: fs.readFileSync('./XliconMedia/theme/XliconPic.jpg'),
+      image: fs.readFileSync('./MteeMedia/theme/MteePic.jpg'),
       caption: xmenu_oh
   }, {
       quoted: m
@@ -18117,7 +18117,7 @@ if (typemenu === 'v1') {
               showAdAttribution: true,
               title: botname,
               body: ownername,
-              thumbnail: fs.readFileSync('./XliconMedia/theme/XliconPic.jpg'),
+              thumbnail: fs.readFileSync('./MteeMedia/theme/MteePic.jpg'),
               sourceUrl: wagc,
               mediaType: 1,
               renderLargerThumbnail: true
@@ -18128,14 +18128,14 @@ if (typemenu === 'v1') {
   })
 } else if (typemenu === 'v3') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh
   }, {
       quoted: m
   })
 } else if (typemenu === 'v4') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh,
       gifPlayback: true
   }, {
@@ -18161,7 +18161,7 @@ if (typemenu === 'v1') {
   }, { quoted: m })
 } else if (typemenu === 'v6') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       gifPlayback: true,
       caption: xmenu_oh,
       contextInfo: {
@@ -18179,7 +18179,7 @@ if (typemenu === 'v1') {
   })
 } else if (typemenu === 'v7') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh,
       gifPlayback: true,
       contextInfo: {
@@ -18233,7 +18233,7 @@ let xmenu_oh = `
 ╰──────❍`
 if (typemenu === 'v1') {
   XliconBotInc.sendMessage(m.chat, {
-      image: fs.readFileSync('./XliconMedia/theme/XliconPic.jpg'),
+      image: fs.readFileSync('./MteeMedia/theme/MteePic.jpg'),
       caption: xmenu_oh
   }, {
       quoted: m
@@ -18246,7 +18246,7 @@ if (typemenu === 'v1') {
               showAdAttribution: true,
               title: botname,
               body: ownername,
-              thumbnail: fs.readFileSync('./XliconMedia/theme/XliconPic.jpg'),
+              thumbnail: fs.readFileSync('./MteeMedia/theme/MteePic.jpg'),
               sourceUrl: wagc,
               mediaType: 1,
               renderLargerThumbnail: true
@@ -18257,14 +18257,14 @@ if (typemenu === 'v1') {
   })
 } else if (typemenu === 'v3') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh
   }, {
       quoted: m
   })
 } else if (typemenu === 'v4') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh,
       gifPlayback: true
   }, {
@@ -18290,7 +18290,7 @@ if (typemenu === 'v1') {
   }, { quoted: m })
 } else if (typemenu === 'v6') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       gifPlayback: true,
       caption: xmenu_oh,
       contextInfo: {
@@ -18308,7 +18308,7 @@ if (typemenu === 'v1') {
   })
 } else if (typemenu === 'v7') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh,
       gifPlayback: true,
       contextInfo: {
@@ -18357,7 +18357,7 @@ let xmenu_oh = `
 ╰──────❍`
 if (typemenu === 'v1') {
   XliconBotInc.sendMessage(m.chat, {
-      image: fs.readFileSync('./XliconMedia/theme/XliconPic.jpg'),
+      image: fs.readFileSync('./MteeMedia/theme/MteePic.jpg'),
       caption: xmenu_oh
   }, {
       quoted: m
@@ -18370,7 +18370,7 @@ if (typemenu === 'v1') {
               showAdAttribution: true,
               title: botname,
               body: ownername,
-              thumbnail: fs.readFileSync('./XliconMedia/theme/XliconPic.jpg'),
+              thumbnail: fs.readFileSync('./MteeMedia/theme/MteePic.jpg'),
               sourceUrl: wagc,
               mediaType: 1,
               renderLargerThumbnail: true
@@ -18381,14 +18381,14 @@ if (typemenu === 'v1') {
   })
 } else if (typemenu === 'v3') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh
   }, {
       quoted: m
   })
 } else if (typemenu === 'v4') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh,
       gifPlayback: true
   }, {
@@ -18414,7 +18414,7 @@ if (typemenu === 'v1') {
   }, { quoted: m })
 } else if (typemenu === 'v6') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       gifPlayback: true,
       caption: xmenu_oh,
       contextInfo: {
@@ -18432,7 +18432,7 @@ if (typemenu === 'v1') {
   })
 } else if (typemenu === 'v7') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh,
       gifPlayback: true,
       contextInfo: {
@@ -18497,7 +18497,7 @@ let xmenu_oh = `
 ╰──────❍`
 if (typemenu === 'v1') {
   XliconBotInc.sendMessage(m.chat, {
-      image: fs.readFileSync('./XliconMedia/theme/XliconPic.jpg'),
+      image: fs.readFileSync('./MteeMedia/theme/MteePic.jpg'),
       caption: xmenu_oh
   }, {
       quoted: m
@@ -18510,7 +18510,7 @@ if (typemenu === 'v1') {
               showAdAttribution: true,
               title: botname,
               body: ownername,
-              thumbnail: fs.readFileSync('./XliconMedia/theme/XliconPic.jpg'),
+              thumbnail: fs.readFileSync('./MteeMedia/theme/MteePic.jpg'),
               sourceUrl: wagc,
               mediaType: 1,
               renderLargerThumbnail: true
@@ -18521,14 +18521,14 @@ if (typemenu === 'v1') {
   })
 } else if (typemenu === 'v3') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh
   }, {
       quoted: m
   })
 } else if (typemenu === 'v4') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh,
       gifPlayback: true
   }, {
@@ -18554,7 +18554,7 @@ if (typemenu === 'v1') {
   }, { quoted: m })
 } else if (typemenu === 'v6') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       gifPlayback: true,
       caption: xmenu_oh,
       contextInfo: {
@@ -18572,7 +18572,7 @@ if (typemenu === 'v1') {
   })
 } else if (typemenu === 'v7') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh,
       gifPlayback: true,
       contextInfo: {
@@ -18638,7 +18638,7 @@ let xmenu_oh = `
 ╰──────❍`
 if (typemenu === 'v1') {
   XliconBotInc.sendMessage(m.chat, {
-      image: fs.readFileSync('./XliconMedia/theme/XliconPic.jpg'),
+      image: fs.readFileSync('./MteeMedia/theme/MteePic.jpg'),
       caption: xmenu_oh
   }, {
       quoted: m
@@ -18651,7 +18651,7 @@ if (typemenu === 'v1') {
               showAdAttribution: true,
               title: botname,
               body: ownername,
-              thumbnail: fs.readFileSync('./XliconMedia/theme/XliconPic.jpg'),
+              thumbnail: fs.readFileSync('./MteeMedia/theme/MteePic.jpg'),
               sourceUrl: wagc,
               mediaType: 1,
               renderLargerThumbnail: true
@@ -18662,14 +18662,14 @@ if (typemenu === 'v1') {
   })
 } else if (typemenu === 'v3') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh
   }, {
       quoted: m
   })
 } else if (typemenu === 'v4') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh,
       gifPlayback: true
   }, {
@@ -18695,7 +18695,7 @@ if (typemenu === 'v1') {
   }, { quoted: m })
 } else if (typemenu === 'v6') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       gifPlayback: true,
       caption: xmenu_oh,
       contextInfo: {
@@ -18713,7 +18713,7 @@ if (typemenu === 'v1') {
   })
 } else if (typemenu === 'v7') {
   XliconBotInc.sendMessage(m.chat, {
-      video: fs.readFileSync('./XliconMedia/theme/Xlicon-Video.mp4'),
+      video: fs.readFileSync('./MteeMedia/theme/Mtee-Video.mp4'),
       caption: xmenu_oh,
       gifPlayback: true,
       contextInfo: {
