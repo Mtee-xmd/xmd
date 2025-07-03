@@ -51,7 +51,7 @@ global.location = process.env.LOCATION || "Pakistan, Lahore, Sabzazar";
 //~~~~~~~~<Session and Bot Details>~~~~~~~~~~~~~\\
 global.SESSION_ID = process.env.SESSION_ID || 'MTEE-XMD~VrFxFAjC#xCZotU062JGHci37gX0H187QGlbzr7ZAc5FufU2zfbE';
 
-global.botname = process.env.BOT_NAME || 'MTEE-XMD;
+global.botname = process.env.BOT_NAME || 'MTEE-XMD';
 
 global.ownernumber = [process.env.OWNER_NUMBER || '263786453367'];
 
